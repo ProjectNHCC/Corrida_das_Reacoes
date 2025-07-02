@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corrida das Reações - Química Orgânica Gamificada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'lab-blue': '#2563eb',
+                        'lab-green': '#16a34a',
+                        'lab-red': '#dc2626',
+                        'lab-yellow': '#ca8a04',
+                        'lab-purple': '#9333ea'
+                    },
+                    keyframes: {
+                        'move-car': {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(20px)' }
+                        },
+                        'bounce-molecule': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        'explode': {
+                            '0%': { transform: 'scale(1) rotate(0deg)', opacity: '1' },
+                            '50%': { transform: 'scale(1.5) rotate(180deg)', opacity: '0.7' },
+                            '100%': { transform: 'scale(0) rotate(360deg)', opacity: '0' }
+                        },
+                        'boost': {
+                            '0%': { transform: 'scale(1)', filter: 'hue-rotate(0deg)' },
+                            '50%': { transform: 'scale(1.1)', filter: 'hue-rotate(180deg)' },
+                            '100%': { transform: 'scale(1)', filter: 'hue-rotate(360deg)' }
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(37, 99, 235, 0.5)' },
+                            '50%': { boxShadow: '0 0 40px rgba(37, 99, 235, 0.8)' }
+                        }
+                    },
+                    animation: {
+                        'move-car': 'move-car 0.5s ease-in-out',
+                        'bounce-molecule': 'bounce-molecule 1s ease-in-out infinite',
+                        'explode': 'explode 0.8s ease-out',
+                        'boost': 'boost 0.3s ease-in-out',
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-green-50 dark:from-gray-900 dark:via-purple-900 dark:to-gray-800 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg border-b-4 border-lab-blue sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="text-4xl animate-bounce-molecule">🧪</div>
+                    <h1 class="text-2xl font-bold text-lab-blue dark:text-blue-400">Corrida das Reações</h1>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#home" class="nav-btn text-gray-700 dark:text-gray-300 hover:text-lab-blue transition-colors">Home</a>
+                    <a href="#molecules" class="nav-btn text-gray-700 dark:text-gray-300 hover:text-lab-blue transition-colors">Moléculas</a>
+                    <a href="#game" class="nav-btn text-gray-700 dark:text-gray-300 hover:text-lab-blue transition-colors">Jogo</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Pontos: <span id="totalScore" class="text-lab-green">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="container mx-auto px-4 py-12">
+        <!-- Hero Section -->
+        <div class="text-center mb-16">
+            <div class="text-8xl mb-8 animate-float">⚗️</div>
+            <h1 class="text-5xl md:text-7xl font-bold text-gray-800 dark:text-white mb-6">
+                A Grande Corrida <span class="text-lab-blue">Molecular</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
+                Em um laboratório mágico onde as moléculas ganham vida, uma corrida épica está prestes a começar. 
+                Cada molécula possui personalidade única, habilidades especiais e histórias fascinantes para contar.
+            </p>
+        </div>
+
+        <!-- Story Introduction -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-12 max-w-6xl mx-auto">
+            <div class="flex items-center mb-6">
+                <div class="text-4xl mr-4">📚</div>
+                <h2 class="text-3xl font-bold text-white-800 dark:text-white">A Narrativa Científica</h2>
+            </div>
+            <div class="prose dark:prose-invert max-w-none text-lg leading-relaxed">
+                <p class="mb-4">
+                    No reino da Química Orgânica, onde carbonos dançam e ligações se formam, 
+                    nasceu uma lenda: <strong>A Corrida das Reações</strong>. 
+                </p>
+                <p class="mb-4">
+                    Inspirado nos trabalhos pioneiros de <em>Friedrich Wöhler</em> (1828) e 
+                    <em>August Kekulé</em> (1865), este universo gamificado transforma 
+                    moléculas em heróis de uma aventura educativa sem precedentes.
+                </p>
+                <p class="mb-4">
+                    Cada molécula carrega em si séculos de descobertas científicas, 
+                    desde a síntese da ureia que quebrou a barreira entre orgânico e inorgânico, 
+                    até a estrutura hexagonal do benzeno que revolucionou nossa compreensão da aromaticidade.
+                </p>
+                <blockquote class="border-l-4 border-lab-blue pl-4 italic text-gray-600 dark:text-gray-400">
+                    "A química é a ciência das metamorfoses." - Antoine Lavoisier
+                </blockquote>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto">
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-lg">
+                <div class="text-3xl mb-2">🏆</div>
+                <div class="text-2xl font-bold text-lab-blue" id="gamesPlayed">0</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Corridas Realizadas</div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-lg">
+                <div class="text-3xl mb-2">🧬</div>
+                <div class="text-2xl font-bold text-lab-green">4</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Moléculas Pilotos</div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-lg">
+                <div class="text-3xl mb-2">📖</div>
+                <div class="text-2xl font-bold text-lab-purple">50+</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Questões Disponíveis</div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-lg">
+                <div class="text-3xl mb-2">⚡</div>
+                <div class="text-2xl font-bold text-lab-yellow">8</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Power-ups Únicos</div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="text-center">
+            <a href="#game" class="bg-gradient-to-r from-lab-blue to-lab-purple hover:from-blue-600 hover:to-purple-600 text-white font-bold py-6 px-12 rounded-2xl text-2xl transition-all transform hover:scale-105 shadow-2xl animate-pulse-glow inline-block">
+                🚀 Começar a Corrida
+            </a>
+            <p class="mt-4 text-gray-600 dark:text-gray-400">
+                Escolha sua molécula e embarque nesta jornada científica!
+            </p>
+        </div>
+    </section>
+
+    <!-- Molecules Section -->
+    <section id="molecules" class="container mx-auto px-4 py-12 border-t border-gray-200 dark:border-gray-700">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Conheça as Moléculas Pilotos</h2>
+            <p class="text-xl text-gray-600 dark:text-gray-300">Cada molécula possui características únicas baseadas em sua química real</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <!-- Etanol Card -->
+            <div class="molecule-card bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all">
+                <div class="flex items-center mb-6">
+                    <div class="text-6xl mr-4 animate-bounce-molecule">🍺</div>
+                    <div>
+                        <h3 class="text-3xl font-bold text-gray-800 dark:text-white">Etanol (C₂H₅OH)</h3>
+                        <p class="text-lg text-gray-600 dark:text-gray-300">O Reativo Versátil</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4 mb-6">
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">Velocidade:</span>
+                        <div class="flex text-yellow-400">★★★★☆</div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">Estabilidade:</span>
+                        <div class="flex text-yellow-400">★★★☆☆</div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">Reatividade:</span>
+                        <div class="flex text-yellow-400">★★★★☆</div>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4 mb-4">
+                    <h4 class="font-bold text-lab-blue mb-2">Reações Favoritas:</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>• Oxidação → Acetaldeído/Ácido Acético</li>
+                        <li>• Esterificação com ácidos carboxílicos</li>
+                        <li>• Desidratação → Eteno</li>
+                    </ul>
+                </div>
+
+                <button onclick="openMoleculeModal('etanol')" class="w-full bg-lab-blue hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-colors">
+                    Ver Detalhes Completos
+                </button>
+            </div>
+
+            <!-- Ciclopropano Card -->
+            <div class="molecule-card bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all">
+                <div class="flex items-center mb-6">
+                    <div class="text-6xl mr-4 animate-bounce-molecule">💣</div>
+                    <div>
+                        <h3 class="text-3xl font-bold text-gray-800 dark:text-white">Ciclopropano (C₃H₆)</h3>
+                        <p class="text-lg text-gray-600 dark:text-gray-300">O Explosivo Instável</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4 mb-6">
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">Velocidade:</span>
+                        <div class="flex text-yellow-400">★★★★★</div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">Estabilidade:</span>
+                        <div class="flex text-yellow-400">★☆☆☆☆</div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">Tensão Angular:</span>
+                        <div class="flex text-red-400">★★★★★</div>
+                    </div>
+                </div>
+
+                <div class="bg-red-50 dark:bg-red-900/30 rounded-lg p-4 mb-4">
+                    <h4 class="font-bold text-lab-red mb-2">Especialidade:</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>• Abertura de anel por tensão angular (60°)</li>
+                        <li>• Adições eletrofílicas rápidas</li>
+                        <li>• Reações de cicloadição</li>
+                    </ul>
+                </div>
+
+                <button onclick="openMoleculeModal('ciclopropano')" class="w-full bg-lab-red hover:bg-red-600 text-white font-semibold py-3 rounded-lg transition-colors">
+                    Ver Detalhes Completos
+                </button>
+            </div>
+
+            <!-- Benzeno Card -->
+            <div class="molecule-card bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all">
+                <div class="flex items-center mb-6">
+                    <div class="text-6xl mr-4 animate-bounce-molecule">⬡</div>
+                    <div>
+                        <h3 class="text-3xl font-bold text-gray-800 dark:text-white">Benzeno (C₆H₆)</h3>
+                        <p class="text-lg text-gray-600 dark:text-gray-300">O Aromático Resistente</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4 mb-6">
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">Velocidade:</span>
+                        <div class="flex text-yellow-400">★★☆☆☆</div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">Estabilidade:</span>
+                        <div class="flex text-yellow-400">★★★★★</div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">Aromaticidade:</span>
+                        <div class="flex text-green-400">★★★★★</div>
+                    </div>
+                </div>
+
+                <div class="bg-green-50 dark:bg-green-900/30 rounded-lg p-4 mb-4">
+                    <h4 class="font-bold text-lab-green mb-2">Reino das Substituições:</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>• Nitração, Sulfonação, Halogenação</li>
+                        <li>• Acilação e Alquilação de Friedel-Crafts</li>
+                        <li>• Manutenção da aromaticidade</li>
+                    </ul>
+                </div>
+
+                <button onclick="openMoleculeModal('benzeno')" class="w-full bg-lab-green hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition-colors">
+                    Ver Detalhes Completos
+                </button>
+            </div>
+
+            <!-- Alceno Card -->
+            <div class="molecule-card bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all">
+                <div class="flex items-center mb-6">
+                    <div class="text-6xl mr-4 animate-bounce-molecule">⚡</div>
+                    <div>
+                        <h3 class="text-3xl font-bold text-gray-800 dark:text-white">Alceno (C=C)</h3>
+                        <p class="text-lg text-gray-600 dark:text-gray-300">O Ágil Versátil</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4 mb-6">
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">Velocidade:</span>
+                        <div class="flex text-yellow-400">★★★★☆</div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">Estabilidade:</span>
+                        <div class="flex text-yellow-400">★★★★☆</div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">Versatilidade:</span>
+                        <div class="flex text-purple-400">★★★★★</div>
+                    </div>
+                </div>
+
+                <div class="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-4 mb-4">
+                    <h4 class="font-bold text-lab-purple mb-2">Master das Adições:</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>• Hidrogenação, Halogenação</li>
+                        <li>• Hidratação (Markovnikov/Anti-Markovnikov)</li>
+                        <li>• Ozonólise, Epoxidação</li>
+                    </ul>
+                </div>
+
+                <button onclick="openMoleculeModal('alceno')" class="w-full bg-lab-purple hover:bg-purple-600 text-white font-semibold py-3 rounded-lg transition-colors">
+                    Ver Detalhes Completos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Section -->
+    <section id="game" class="container mx-auto px-4 py-8 border-t border-gray-200 dark:border-gray-700">
+        <!-- Character Selection Screen -->
+        <div id="characterSelection">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold mb-4 text-gray-800 dark:text-white">Escolha sua Molécula Piloto</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300">Cada molécula possui características únicas que afetarão sua performance na corrida</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                <!-- Characters will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="hidden">
+            <!-- Progress Bar -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 mb-6 shadow-lg">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-semibold">Progresso da Corrida</span>
+                    <span class="text-sm">Questão <span id="currentQuestionNumber">1</span> de <span id="totalQuestions">8</span></span>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                    <div id="progressBar" class="bg-gradient-to-r from-lab-blue to-lab-green h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Race Track -->
+            <div class="relative bg-gray-600 dark:bg-gray-800 rounded-lg overflow-hidden shadow-2xl mb-6" style="height: 400px;">
+                <!-- Track Background -->
+                <div class="absolute inset-0 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700">
+                    <!-- Track Lines -->
+                    <div class="absolute top-1/2 left-0 right-0 h-1 bg-yellow-400 transform -translate-y-1/2"></div>
+                    <div class="absolute top-1/4 left-0 right-0 h-0.5 bg-white opacity-50"></div>
+                    <div class="absolute top-3/4 left-0 right-0 h-0.5 bg-white opacity-50"></div>
+                </div>
+
+                <!-- Player Car -->
+                <div id="playerCar" class="absolute left-8 top-1/2 transform -translate-y-1/2 text-4xl transition-all duration-300">
+                    🍺
+                </div>
+
+                <!-- Obstacles and Power-ups -->
+                <div id="obstacles" class="absolute inset-0"></div>
+
+                <!-- Finish Line -->
+                <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-b from-black via-white to-black opacity-30">
+                    <div class="text-2xl text-center mt-4">🏁</div>
+                </div>
+            </div>
+
+            <!-- Game Stats -->
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center shadow-lg">
+                    <div class="text-2xl text-lab-blue font-bold" id="gameScore">0</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Pontos</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center shadow-lg">
+                    <div class="text-2xl text-lab-green font-bold" id="gamePosition">0%</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Posição</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center shadow-lg">
+                    <div class="text-2xl text-lab-purple font-bold" id="streakCount">0</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Sequência</div>
+                </div>
+            </div>
+
+            <!-- Question Panel -->
+            <div id="questionPanel" class="bg-white dark:bg-gray-700 rounded-lg shadow-xl p-6 mb-6">
+                <div class="flex items-center mb-4">
+                    <div class="text-3xl mr-3">🧪</div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white">Obstáculo Químico!</h3>
+                    <div class="ml-auto">
+                        <span class="bg-lab-blue text-white px-3 py-1 rounded-full text-sm" id="questionTimer">30s</span>
+                    </div>
+                </div>
+                <div id="questionText" class="text-lg text-gray-700 dark:text-gray-300 mb-6">
+                    Carregando pergunta...
+                </div>
+                <div id="answerOptions" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Options will be populated by JavaScript -->
+                </div>
+                <div id="feedback" class="mt-4 p-4 rounded-lg hidden">
+                    <!-- Feedback will be shown here -->
+                </div>
+            </div>
+
+            <!-- Power-ups Info -->
+            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-xl p-6">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Power-ups Químicos</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center">
+                        <div class="text-3xl mb-2">💨</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-300">Catalisador</div>
+                        <div class="text-xs text-lab-blue">+50 Boost</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl mb-2">🔥</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-300">Calor/UV</div>
+                        <div class="text-xs text-lab-green">Atalho</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl mb-2">⚗️</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-300">Solvente</div>
+                        <div class="text-xs text-lab-yellow">Velocidade</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl mb-2">💣</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-300">Erro</div>
+                        <div class="text-xs text-lab-red">-25 pontos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="hidden text-center">
+            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-xl p-8 max-w-2xl mx-auto">
+                <div class="text-6xl mb-4">🏆</div>
+                <h2 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Corrida Concluída!</h2>
+                <div class="text-2xl text-lab-green mb-6">
+                    Pontuação Final: <span id="finalScore">0</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-gray-600 dark:text-gray-300 mb-6">
+                    <div class="bg-green-100 dark:bg-green-900/30 p-4 rounded-lg">
+                        <div class="text-2xl font-bold text-green-600" id="correctAnswers">0</div>
+                        <div class="text-sm">Reações Corretas</div>
+                    </div>
+                    <div class="bg-red-100 dark:bg-red-900/30 p-4 rounded-lg">
+                        <div class="text-2xl font-bold text-red-600" id="incorrectAnswers">0</div>
+                        <div class="text-sm">Reações Incorretas</div>
+                    </div>
+                    <div class="bg-blue-100 dark:bg-blue-900/30 p-4 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-600" id="powerupsCollected">0</div>
+                        <div class="text-sm">Power-ups Coletados</div>
+                    </div>
+                    <div class="bg-purple-100 dark:bg-purple-900/30 p-4 rounded-lg">
+                        <div class="text-2xl font-bold text-purple-600" id="maxStreak">0</div>
+                        <div class="text-sm">Maior Sequência</div>
+                    </div>
+                </div>
+                <div class="space-x-4">
+                    <button id="playAgainBtn" class="bg-lab-blue hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg">
+                        Jogar Novamente
+                    </button>
+                    <button onclick="scrollToTop()" class="bg-lab-green hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg">
+                        Voltar ao Início
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Molecule Modal -->
+    <div id="moleculeModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="modalTitle" class="text-3xl font-bold text-gray-800 dark:text-white"></h2>
+                    <button onclick="closeMoleculeModal()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl">
+                        ✕
+                    </button>
+                </div>
+                <div id="modalContent" class="space-y-6">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+<footer class="bg-gray-800 dark:bg-gray-900 text-white py-12 mt-16">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-center"> <!-- Adicione esta div para centralizar -->
+            <div class="border-t border-gray-700 pt-8 text-center text-sm text-gray-400 max-w-3xl mx-auto"> <!-- Ajuste as classes aqui -->
+                <p>&copy; 2025 Corrida das Reações. Desenvolvido por Lucas Gomes para a educação científica.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Global State
+        let globalState = {
+            totalScore: 0,
+            gamesPlayed: 0
+        };
+
+        // Game State
+        let gameState = {
+            character: null,
+            score: 0,
+            position: 0,
+            currentQuestion: 0,
+            correctAnswers: 0,
+            incorrectAnswers: 0,
+            powerupsCollected: 0,
+            isBoostActive: false,
+            streak: 0,
+            maxStreak: 0,
+            timer: null,
+            timeLeft: 30
+        };
+
+        // Character data
+        const characters = {
+            etanol: { 
+                emoji: '🍺', 
+                speed: 4, 
+                stability: 3, 
+                name: 'Etanol (C₂H₅OH)',
+                description: 'O Reativo Versátil',
+                reactions: ['Oxidação → Acetaldeído/Ácido Acético', 'Esterificação com ácidos carboxílicos', 'Desidratação → Eteno'],
+                history: 'Descoberto por al-Kindi no século IX, o etanol foi uma das primeiras moléculas orgânicas estudadas sistematicamente.',
+                industry: 'Usado como combustível, solvente e matéria-prima na indústria química e farmacêutica.'
+            },
+            ciclopropano: { 
+                emoji: '💣', 
+                speed: 5, 
+                stability: 1, 
+                name: 'Ciclopropano (C₃H₆)',
+                description: 'O Explosivo Instável',
+                reactions: ['Abertura de anel por tensão angular (60°)', 'Adições eletrofílicas rápidas', 'Reações de cicloadição'],
+                history: 'Sintetizado pela primeira vez por August Freund em 1882, revolucionou o entendimento sobre tensão angular.',
+                industry: 'Historicamente usado como anestésico, hoje é importante em síntese orgânica como intermediário reativo.'
+            },
+            benzeno: { 
+                emoji: '⬡', 
+                speed: 2, 
+                stability: 5, 
+                name: 'Benzeno (C₆H₆)',
+                description: 'O Aromático Resistente',
+                reactions: ['Nitração, Sulfonação, Halogenação', 'Acilação e Alquilação de Friedel-Crafts', 'Manutenção da aromaticidade'],
+                history: 'Descoberto por Michael Faraday em 1825, sua estrutura foi proposta por Kekulé em 1865, mudando a química orgânica.',
+                industry: 'Base para produção de estireno, fenol, anilina e outros aromáticos industrialmente importantes.'
+            },
+            alceno: { 
+                emoji: '⚡', 
+                speed: 4, 
+                stability: 4, 
+                name: 'Alceno (C=C)',
+                description: 'O Ágil Versátil',
+                reactions: ['Hidrogenação, Halogenação', 'Hidratação (Markovnikov/Anti-Markovnikov)', 'Ozonólise, Epoxidação'],
+                history: 'O etileno foi identificado por químicos holandeses em 1795, sendo o primeiro alceno caracterizado.',
+                industry: 'Etileno é o composto orgânico mais produzido mundialmente, base para plásticos e petroquímicos.'
+            }
+        };
+
+        // Expanded questions database
+        const questions = [
+            {
+                question: "Qual tipo de reação transforma um alceno em um di-haleto?",
+                options: ["Adição", "Substituição", "Eliminação", "Oxidação"],
+                correct: 0,
+                explanation: "A adição eletrofílica adiciona dois halogênios ao alceno, formando um di-haleto vicinal através de um intermediário halônio cíclico.",
+                difficulty: "easy"
+            },
+            {
+                question: "Para converter um álcool primário em ácido carboxílico, usa-se:",
+                options: ["Redução", "Eliminação", "Oxidação", "Substituição"],
+                correct: 2,
+                explanation: "A oxidação forte com KMnO₄ ou K₂Cr₂O₇ converte álcoois primários em ácidos carboxílicos passando pelo aldeído intermediário.",
+                difficulty: "medium"
+            },
+            {
+                question: "A reação de eliminação de HBr de um haleto de alquila produz:",
+                options: ["Álcool", "Alceno", "Éter", "Ácido"],
+                correct: 1,
+                explanation: "A eliminação β (E2 ou E1) remove HBr formando uma ligação dupla C=C, produzindo um alceno segundo a regra de Zaitsev.",
+                difficulty: "easy"
+            },
+            {
+                question: "O benzeno sofre principalmente reações de:",
+                options: ["Adição", "Substituição aromática", "Eliminação", "Redução"],
+                correct: 1,
+                explanation: "O benzeno mantém sua aromaticidade através de substituições eletrofílicas aromáticas (SEAr), preservando o sistema π conjugado.",
+                difficulty: "medium"
+            },
+            {
+                question: "Qual catalisador é usado na hidrogenação de alcenos?",
+                options: ["H₂SO₄", "Pd/C", "NaOH", "KMnO₄"],
+                correct: 1,
+                explanation: "Paládio sobre carbono (Pd/C) catalisa a adição syn de H₂ ao alceno através de adsorção na superfície metálica.",
+                difficulty: "medium"
+            },
+            {
+                question: "A reação SN2 ocorre preferencialmente em:",
+                options: ["Carbono terciário", "Carbono primário", "Carbono aromático", "Carbono carbonílico"],
+                correct: 1,
+                explanation: "SN2 prefere carbonos primários devido ao menor impedimento estérico, permitindo o ataque backside do nucleófilo.",
+                difficulty: "hard"
+            },
+            {
+                question: "Para oxidar um álcool secundário, o produto é:",
+                options: ["Ácido carboxílico", "Éter", "Cetona", "Aldeído"],
+                correct: 2,
+                explanation: "Álcoois secundários se oxidam formando cetonas, que não podem ser oxidadas posteriormente por falta de hidrogênio α.",
+                difficulty: "easy"
+            },
+            {
+                question: "A nitração do benzeno usa como reagente:",
+                options: ["HNO₃/H₂SO₄", "HCl/AlCl₃", "Br₂/FeBr₃", "CH₃Cl/AlCl₃"],
+                correct: 0,
+                explanation: "Mistura nitratante (HNO₃/H₂SO₄) gera o íon nitrônio (NO₂⁺) que ataca o anel benzênico em substituição eletrofílica.",
+                difficulty: "medium"
+            },
+            {
+                question: "Em que condições a regra de Markovnikov NÃO se aplica?",
+                options: ["Adição de HBr com peróxidos", "Adição de HCl", "Adição de H₂O", "Adição de HI"],
+                correct: 0,
+                explanation: "Na presença de peróxidos, a adição de HBr segue mecanismo radicalar, resultando em orientação anti-Markovnikov.",
+                difficulty: "hard"
+            },
+            {
+                question: "O que caracteriza um carbocátion terciário?",
+                options: ["Menos estável que secundário", "Formado em SN2", "Estabilizado por hiperconjugação", "Não existe"],
+                correct: 2,
+                explanation: "Carbocátions terciários são estabilizados por hiperconjugação de 9 ligações C-H adjacentes e efeito indutivo de 3 grupos alquila.",
+                difficulty: "hard"
+            }
+        ];
+
+        // Power-ups
+        const powerups = [
+            { emoji: '💨', type: 'catalyst', points: 50, name: 'Catalisador' },
+            { emoji: '🔥', type: 'heat', points: 30, name: 'Energia de Ativação' },
+            { emoji: '⚗️', type: 'solvent', points: 20, name: 'Solvente Polar' },
+            { emoji: '🌡️', type: 'temperature', points: 25, name: 'Controle de Temperatura' },
+            { emoji: '⚡', type: 'electricity', points: 35, name: 'Eletrolise' },
+            { emoji: '🔬', type: 'equipment', points: 15, name: 'Equipamento Avançado' },
+            { emoji: '💧', type: 'hydrolysis', points: 20, name: 'Hidrólise' },
+            { emoji: '💣', type: 'error', points: -25, name: 'Erro Experimental' }
+        ];
+
+        // Molecule details for modal
+        const moleculeDetails = {
+            etanol: {
+                structure: "H₃C-CH₂-OH",
+                properties: {
+                    "Fórmula Molecular": "C₂H₅OH",
+                    "Massa Molar": "46.07 g/mol",
+                    "Ponto de Ebulição": "78.37°C",
+                    "Ponto de Fusão": "-114.1°C",
+                    "Densidade": "0.789 g/cm³",
+                    "Solubilidade": "Miscível em água"
+                },
+                industrialUses: [
+                    "Combustível (etanol hidratado e anidro)",
+                    "Solvente para tintas e cosméticos",
+                    "Matéria-prima para ésteres",
+                    "Antisséptico e desinfetante",
+                    "Bebidas alcoólicas"
+                ],
+                mechanisms: [
+                    "Oxidação: CH₃CH₂OH → CH₃CHO → CH₃COOH",
+                    "Desidratação: CH₃CH₂OH → CH₂=CH₂ + H₂O",
+                    "Esterificação: ROH + R'COOH → R'COOR + H₂O"
+                ]
+            },
+            ciclopropano: {
+                structure: "△ (anel triangular tenso)",
+                properties: {
+                    "Fórmula Molecular": "C₃H₆",
+                    "Massa Molar": "42.08 g/mol",
+                    "Ângulo de Ligação": "60° (tensão angular)",
+                    "Tensão de Anel": "115 kJ/mol",
+                    "Estado": "Gás incolor",
+                    "Estabilidade": "Altamente reativo"
+                },
+                industrialUses: [
+                    "Síntese de compostos orgânicos complexos",
+                    "Intermediário em cicloadições",
+                    "Reagente em química medicinal",
+                    "Historicamente: anestésico geral"
+                ],
+                mechanisms: [
+                    "Abertura de anel: C₃H₆ + HBr → CH₃CH₂CH₂Br",
+                    "Cicloadição [2+1]: formação de ciclobutanos",
+                    "Isomerização: △ → CH₃CH=CH₂ (propeno)"
+                ]
+            },
+            benzeno: {
+                structure: "⬡ (anel aromático)",
+                properties: {
+                    "Fórmula Molecular": "C₆H₆",
+                    "Massa Molar": "78.11 g/mol",
+                    "Ponto de Ebulição": "80.1°C",
+                    "Energia de Ressonância": "150 kJ/mol",
+                    "Distância C-C": "1.39 Å (intermediária)",
+                    "Aromaticidade": "Regra de Hückel (4n+2 π e⁻)"
+                },
+                industrialUses: [
+                    "Produção de estireno (poliestireno)",
+                    "Síntese de fenol e anilina",
+                    "Solvente industrial",
+                    "Matéria-prima para plásticos",
+                    "Produção de detergentes"
+                ],
+                mechanisms: [
+                    "Nitração: C₆H₆ + HNO₃/H₂SO₄ → C₆H₅NO₂",
+                    "Halogenação: C₆H₆ + Br₂/FeBr₃ → C₆H₅Br",
+                    "Alquilação de Friedel-Crafts: C₆H₆ + RCl/AlCl₃ → C₆H₅R"
+                ]
+            },
+            alceno: {
+                structure: "R-CH=CH-R' (dupla ligação)",
+                properties: {
+                    "Tipo de Ligação": "σ + π",
+                    "Geometria": "Trigonal planar",
+                    "Ângulo": "120°",
+                    "Comprimento C=C": "1.34 Å",
+                    "Isomeria": "Geométrica (cis/trans)",
+                    "Reatividade": "Adições eletrofílicas"
+                },
+                industrialUses: [
+                    "Etileno: produção de polietileno",
+                    "Propeno: produção de polipropileno",
+                    "Matéria-prima para álcoois",
+                    "Síntese de polímeros",
+                    "Produção de solventes"
+                ],
+                mechanisms: [
+                    "Adição de HBr: CH₂=CH₂ + HBr → CH₃CH₂Br",
+                    "Hidrogenação: CH₂=CH₂ + H₂/Pd → CH₃CH₃",
+                    "Ozonólise: R-CH=CH-R' + O₃ → RCHO + R'CHO"
+                ]
+            }
+        };
+
+        // Initialize game section
+        function initGameSection() {
+            // Reset to character selection
+            document.getElementById('characterSelection').classList.remove('hidden');
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.add('hidden');
+            
+            // Populate character cards
+            const characterContainer = document.querySelector('#characterSelection .grid');
+            characterContainer.innerHTML = '';
+            
+            Object.entries(characters).forEach(([key, char]) => {
+                const card = document.createElement('div');
+                card.className = `character-card bg-white dark:bg-gray-700 rounded-lg p-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all cursor-pointer border-4 border-transparent hover:border-lab-blue`;
+                card.dataset.character = key;
+                
+                card.innerHTML = `
+                    <div class="text-6xl mb-4 animate-bounce-molecule">${char.emoji}</div>
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">${char.name.split(' ')[0]}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">${char.description}</p>
+                    <div class="text-xs space-y-1">
+                        <div class="flex justify-between">
+                            <span>Velocidade:</span>
+                            <div class="flex">${'★'.repeat(char.speed)}${'☆'.repeat(5-char.speed)}</div>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Estabilidade:</span>
+                            <div class="flex">${'★'.repeat(char.stability)}${'☆'.repeat(5-char.stability)}</div>
+                        </div>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => selectCharacter(key));
+                characterContainer.appendChild(card);
+            });
+        }
+
+        // Game functions
+        function selectCharacter(character) {
+            gameState.character = character;
+            gameState.score = 0;
+            gameState.position = 0;
+            gameState.currentQuestion = 0;
+            gameState.correctAnswers = 0;
+            gameState.incorrectAnswers = 0;
+            gameState.powerupsCollected = 0;
+            gameState.streak = 0;
+            gameState.maxStreak = 0;
+            
+            document.getElementById('characterSelection').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            
+            // Update player car emoji
+            document.getElementById('playerCar').textContent = characters[character].emoji;
+            
+            startRace();
+        }
+
+        function startRace() {
+            document.getElementById('totalQuestions').textContent = questions.length;
+            generateObstacles();
+            showQuestion();
+            updateGameUI();
+        }
+
+        function generateObstacles() {
+            const obstaclesContainer = document.getElementById('obstacles');
+            obstaclesContainer.innerHTML = '';
+            
+            // Generate power-ups along the track
+            for (let i = 0; i < 10; i++) {
+                const obstacle = document.createElement('div');
+                const powerup = powerups[Math.floor(Math.random() * powerups.length)];
+                
+                obstacle.className = 'absolute cursor-pointer text-2xl hover:scale-110 transition-transform';
+                obstacle.textContent = powerup.emoji;
+                obstacle.style.left = `${15 + i * 8}%`;
+                obstacle.style.top = `${20 + Math.random() * 60}%`;
+                obstacle.dataset.type = powerup.type;
+                obstacle.dataset.points = powerup.points;
+                obstacle.title = powerup.name;
+                
+                obstacle.addEventListener('click', () => collectPowerup(obstacle, powerup));
+                
+                obstaclesContainer.appendChild(obstacle);
+            }
+        }
+
+        function collectPowerup(element, powerup) {
+            element.remove();
+            gameState.powerupsCollected++;
+            
+            if (powerup.type === 'error') {
+                gameState.score = Math.max(0, gameState.score + powerup.points);
+                gameState.streak = 0;
+                showFeedback(`💣 ${powerup.name}! Você perdeu pontos!`, 'error');
+                
+                // Explosion animation
+                const playerCar = document.getElementById('playerCar');
+                playerCar.style.animation = 'explode 0.8s ease-out';
+                setTimeout(() => {
+                    playerCar.style.animation = '';
+                }, 800);
+            } else {
+                gameState.score += powerup.points;
+                showFeedback(`${powerup.emoji} ${powerup.name}! +${powerup.points} pontos`, 'success');
+                
+                // Boost animation
+                const playerCar = document.getElementById('playerCar');
+                playerCar.style.animation = 'boost 0.3s ease-in-out';
+                setTimeout(() => {
+                    playerCar.style.animation = '';
+                }, 300);
+                
+                if (powerup.type === 'catalyst' || powerup.type === 'heat') {
+                    gameState.isBoostActive = true;
+                    setTimeout(() => {
+                        gameState.isBoostActive = false;
+                    }, 5000);
+                }
+            }
+            
+            updateGameUI();
+        }
+
+        function showQuestion() {
+            if (gameState.currentQuestion >= questions.length) {
+                endRace();
+                return;
+            }
+            
+            const question = questions[gameState.currentQuestion];
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('currentQuestionNumber').textContent = gameState.currentQuestion + 1;
+            
+            // Update progress bar
+            const progress = ((gameState.currentQuestion) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            
+            const optionsContainer = document.getElementById('answerOptions');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors text-base';
+                button.textContent = option;
+                button.addEventListener('click', () => answerQuestion(index));
+                optionsContainer.appendChild(button);
+            });
+            
+            // Hide feedback
+            document.getElementById('feedback').classList.add('hidden');
+            
+            // Start timer
+            startQuestionTimer();
+        }
+
+        function startQuestionTimer() {
+            gameState.timeLeft = 30;
+            const timerElement = document.getElementById('questionTimer');
+            
+            gameState.timer = setInterval(() => {
+                gameState.timeLeft--;
+                timerElement.textContent = `${gameState.timeLeft}s`;
+                
+                if (gameState.timeLeft <= 10) {
+                    timerElement.classList.add('bg-red-500');
+                    timerElement.classList.remove('bg-lab-blue');
+                }
+                
+                if (gameState.timeLeft <= 0) {
+                    clearInterval(gameState.timer);
+                    answerQuestion(-1); // Timeout
+                }
+            }, 1000);
+        }
+
+        function answerQuestion(selectedIndex) {
+            clearInterval(gameState.timer);
+            document.getElementById('questionTimer').classList.remove('bg-red-500');
+            document.getElementById('questionTimer').classList.add('bg-lab-blue');
+            
+            const question = questions[gameState.currentQuestion];
+            const isCorrect = selectedIndex === question.correct;
+            const isTimeout = selectedIndex === -1;
+            
+            // Disable all buttons
+            document.querySelectorAll('#answerOptions button').forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-50');
+            });
+            
+            if (isTimeout) {
+                gameState.incorrectAnswers++;
+                gameState.streak = 0;
+                showFeedback(`⏰ Tempo esgotado! ${question.explanation}`, 'error');
+            } else if (isCorrect) {
+                gameState.correctAnswers++;
+                gameState.streak++;
+                gameState.maxStreak = Math.max(gameState.maxStreak, gameState.streak);
+                
+                let points = 100;
+                
+                // Time bonus
+                if (gameState.timeLeft > 20) points += 50;
+                else if (gameState.timeLeft > 10) points += 25;
+                
+                // Streak bonus
+                if (gameState.streak >= 3) points += gameState.streak * 10;
+                
+                // Character bonus
+                const char = characters[gameState.character];
+                points += char.speed * 5;
+                
+                // Boost bonus
+                if (gameState.isBoostActive) points += 50;
+                
+                gameState.score += points;
+                showFeedback(`✅ Correto! ${question.explanation} (+${points} pontos)`, 'success');
+                moveCarForward();
+            } else {
+                gameState.incorrectAnswers++;
+                gameState.streak = 0;
+                gameState.score = Math.max(0, gameState.score - 25);
+                showFeedback(`❌ Incorreto. ${question.explanation} (-25 pontos)`, 'error');
+            }
+            
+            updateGameUI();
+            
+            // Next question after delay
+            setTimeout(() => {
+                gameState.currentQuestion++;
+                showQuestion();
+            }, 4000);
+        }
+
+        function moveCarForward() {
+            const baseMove = 10;
+            const charBonus = characters[gameState.character].speed;
+            const boostBonus = gameState.isBoostActive ? 5 : 0;
+            const streakBonus = Math.min(gameState.streak * 2, 10);
+            
+            gameState.position += baseMove + charBonus + boostBonus + streakBonus;
+            gameState.position = Math.min(100, gameState.position);
+            
+            const playerCar = document.getElementById('playerCar');
+            playerCar.style.left = `${8 + (gameState.position * 0.8)}%`;
+            playerCar.style.animation = 'move-car 0.5s ease-in-out';
+            
+            setTimeout(() => {
+                playerCar.style.animation = '';
+            }, 500);
+        }
+
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.className = `mt-4 p-4 rounded-lg ${
+                type === 'success' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+            }`;
+            feedback.classList.remove('hidden');
+        }
+
+        function updateGameUI() {
+            document.getElementById('gameScore').textContent = gameState.score;
+            document.getElementById('gamePosition').textContent = `${Math.round(gameState.position)}%`;
+            document.getElementById('streakCount').textContent = gameState.streak;
+        }
+
+        function endRace() {
+            globalState.totalScore += gameState.score;
+            globalState.gamesPlayed++;
+            
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+            
+            // Update results
+            document.getElementById('finalScore').textContent = gameState.score;
+            document.getElementById('correctAnswers').textContent = gameState.correctAnswers;
+            document.getElementById('incorrectAnswers').textContent = gameState.incorrectAnswers;
+            document.getElementById('powerupsCollected').textContent = gameState.powerupsCollected;
+            document.getElementById('maxStreak').textContent = gameState.maxStreak;
+            
+            // Update global UI
+            document.getElementById('totalScore').textContent = globalState.totalScore;
+            document.getElementById('gamesPlayed').textContent = globalState.gamesPlayed;
+            
+            // Reset car position
+            document.getElementById('playerCar').style.left = '2rem';
+        }
+
+        function resetGame() {
+            initGameSection();
+        }
+
+        // Molecule modal functions
+        function openMoleculeModal(moleculeKey) {
+            const molecule = characters[moleculeKey];
+            const details = moleculeDetails[moleculeKey];
+            
+            document.getElementById('modalTitle').textContent = molecule.name;
+            
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-lab-blue">Propriedades Físico-Químicas</h3>
+                        <div class="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4 mb-6">
+                            <h4 class="font-bold mb-2">Estrutura:</h4>
+                            <p class="text-lg font-mono">${details.structure}</p>
+                        </div>
+                        <div class="space-y-3">
+                            ${Object.entries(details.properties).map(([key, value]) => `
+                                <div class="flex justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded">
+                                    <span class="font-semibold">${key}:</span>
+                                    <span>${value}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-lab-green">História e Contexto</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-6">${molecule.history}</p>
+                        
+                        <h4 class="text-xl font-bold mb-3 text-lab-purple">Aplicações Industriais</h4>
+                        <ul class="space-y-2 mb-6">
+                            ${details.industrialUses.map(use => `
+                                <li class="flex items-start">
+                                    <span class="text-lab-blue mr-2">•</span>
+                                    <span>${use}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="text-2xl font-bold mb-4 text-lab-red">Principais Reações e Mecanismos</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${details.mechanisms.map(mechanism => `
+                            <div class="bg-red-50 dark:bg-red-900/30 p-4 rounded-lg">
+                                <p class="font-mono text-sm">${mechanism}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <button onclick="selectCharacterFromModal('${moleculeKey}')" class="bg-lab-blue hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg transition-colors">
+                        Jogar com ${molecule.name.split(' ')[0]}
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('moleculeModal').classList.remove('hidden');
+        }
+
+        function closeMoleculeModal() {
+            document.getElementById('moleculeModal').classList.add('hidden');
+        }
+
+        function selectCharacterFromModal(character) {
+            closeMoleculeModal();
+            document.getElementById('game').scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => selectCharacter(character), 500);
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Play again button
+        document.getElementById('playAgainBtn').addEventListener('click', resetGame);
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initGameSection();
+            updateGlobalUI();
+        });
+
+        function updateGlobalUI() {
+            document.getElementById('totalScore').textContent = globalState.totalScore;
+            document.getElementById('gamesPlayed').textContent = globalState.gamesPlayed;
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('moleculeModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeMoleculeModal();
+            }
+        });
+    </script>
+</body>
+</html>
